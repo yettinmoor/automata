@@ -1,3 +1,4 @@
+import os
 from PIL import Image, ImageDraw, ImageFont
 
 W = 501
@@ -23,6 +24,11 @@ def apply_rule(row, rule):
 
 
 font = ImageFont.truetype('Inconsolata-Regular.ttf', size=300)
+
+try:
+    os.mkdir('rules')
+except:
+    pass
 
 for rule in range(0x100):
     print(f'Drawing rule {rule}')
