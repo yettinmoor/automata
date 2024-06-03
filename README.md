@@ -5,3 +5,4 @@ Generates all 256 rules for 1d cellular automata; see [Weissteins's article on M
 Depencendies: Pillow.
 
 ![Rule 22](r22.png)
+![Rule 110](r110.png)
