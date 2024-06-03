@@ -18,27 +18,24 @@ def apply_rule(row, rule):
     above_seq = (row[i:i+3] for i in range(0, len(row) - 2))
     new_row = [
         1 if rule & (1 << (above[0] << 2 | above[1] << 1 | above[2])) else 0
-        for x, above in zip(row[1:], above_seq)
+        for above in above_seq
     ]
     return [0] + new_row + [0]
 
 
-font = ImageFont.truetype('Inconsolata-Regular.ttf', size=300)
+font = ImageFont.truetype('inconsolata.regular.ttf', size=300)
 
-try:
-    os.mkdir('rules')
-except:
-    pass
+os.makedirs('rules', exist_ok=True)
 
 for rule in range(0x100):
     print(f'Drawing rule {rule}')
 
     # Header
     header = Image.new('1', (W * CELL_SIZE, 600), color='white')
-    title = f'Rule {rule}'
-    fw, fh = font.getsize(title)
+    title = f'Rule {rule} ({rule:b})'
+    x1, y1, x2, y2 = font.getbbox(title)
     ImageDraw.Draw(header).text(
-        ((W * CELL_SIZE - fw) / 2, (header.height - fh) / 2), title, font=font)
+        ((W * CELL_SIZE - (x2-x1)) / 2, (header.height - (y2-y1)) / 2), title, font=font)
 
     # Pattern
     pattern = Image.new('1', (W * CELL_SIZE, H * CELL_SIZE), color='white')
@@ -59,4 +56,4 @@ for rule in range(0x100):
     im.paste(header)
     im.paste(pattern, (0, header.height))
 
-    im.save(f'rules/r{rule:02x}.png')
+    im.save(f'rules/r{rule}.png')
